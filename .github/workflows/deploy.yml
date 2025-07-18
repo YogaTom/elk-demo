@@ -20,8 +20,13 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
+            if [ ! -d "/home/tom/elk-demo/.git" ]; then
+              git clone -b main git@github.com:YogaTom/elk-demo.git /home/tom/elk-demo
+            else
+              cd /home/tom/elk-demo && git pull origin main
+            fi
+
             cd /home/tom/elk-demo
-            git pull origin main
             docker compose down
             docker compose up -d --build
 
